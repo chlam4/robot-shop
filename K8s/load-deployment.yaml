@@ -20,16 +20,22 @@ spec:
           - name: HOST
             value: "http://web:8080/"
           - name: NUM_CLIENTS
-            value: "15"
+            value: "10"
+          - name: STEP_USERS
+            value: "5"
+          - name: STEP_TIME
+            value: "1h"
+          - name: RUN_TIME
+            value: "2h"
           - name: SILENT
             value: "1"
           - name: ERROR
             value: "1"
-        image: robotshop/rs-load:latest
+        image: chlam4/rs-load:latest
         resources:
           limits:
-            cpu: 200m
-            memory: 200Mi
+            cpu: 300m
+            memory: 300Mi
           requests:
             cpu: 100m
             memory: 100Mi

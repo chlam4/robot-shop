@@ -20,7 +20,6 @@ else
     exit 1
 fi
 
-
 if [ "$RUN_TIME" != "0" ]
 then
     if echo "$RUN_TIME" | egrep -q '^([0-9]+h)?([0-9]+m)?$'
@@ -35,11 +34,33 @@ else
     unset TIME
 fi
 
-echo "Starting $CLIENTS clients for ${RUN_TIME:-ever}"
+if echo "$STEP_USERS" | egrep -q '^[0-9]+$'
+then
+    echo "Stepping load with $STEP_USERS clients"
+else
+    echo "STEP_USERS $STEP_USERS is not a number"
+    exit 1
+fi
+
+if [ "$STEP_TIME" != "0" ]
+then
+    if echo "$STEP_TIME" | egrep -q '^([0-9]+h)?([0-9]+m)?$'
+    then
+        STEP_OPT="--step-load --step-users $STEP_USERS --step-time $STEP_TIME"
+    else
+        echo "Wrong time format, use 2h42m"
+        exit 1
+    fi
+else
+    unset STEP_TIME
+    unset STEP_OPT
+fi
+
+echo "Starting $NUM_CLIENTS clients for ${RUN_TIME:-ever}"
 if [ "$SILENT" -eq 1 ]
 then
-    locust -f robot-shop.py --host "$HOST" --no-web -r 1 -c $NUM_CLIENTS $TIME > /dev/null 2>&1
+    locust -f robot-shop.py --host "$HOST" --headless -r 1 -u $NUM_CLIENTS $TIME $STEP_OPT > /dev/null 2>&1
 else
-    locust -f robot-shop.py --host "$HOST" --no-web -r 1 -c $NUM_CLIENTS $TIME
+    locust -f robot-shop.py --host "$HOST" --headless -r 1 -u $NUM_CLIENTS $TIME $STEP_OPT
 fi
 

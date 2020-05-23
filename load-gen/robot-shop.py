@@ -1,7 +1,8 @@
 import os
-from locust import HttpLocust, TaskSet, task
+from locust import HttpUser, TaskSet, task
 from random import choice
 from random import randint
+
 
 class UserBehavior(TaskSet):
     def on_start(self):
@@ -16,7 +17,6 @@ class UserBehavior(TaskSet):
                 }
         res = self.client.post('/api/user/login', json=credentials)
         print('login {}'.format(res.status_code))
-
 
     @task
     def load(self):
@@ -69,7 +69,7 @@ class UserBehavior(TaskSet):
             self.client.post('/api/payment/pay/partner-57', json=cart)
 
 
-class WebsiteUser(HttpLocust):
-    task_set = UserBehavior
+class WebsiteUser(HttpUser):
+    tasks = [UserBehavior]
     min_wait = 1000
     max_wait = 5000
