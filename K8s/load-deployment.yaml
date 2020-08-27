@@ -5,7 +5,7 @@ metadata:
   labels:
     service: load
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       service: load
@@ -24,18 +24,18 @@ spec:
           - name: STEP_USERS
             value: "5"
           - name: STEP_TIME
-            value: "1h"
+            value: "0"
           - name: RUN_TIME
             value: "2h"
           - name: SILENT
             value: "1"
           - name: ERROR
-            value: "1"
+            value: "0"
         image: chlam4/rs-load:latest
         resources:
           limits:
-            cpu: 300m
-            memory: 300Mi
+            cpu: 800m
+            memory: 500Mi
           requests:
             cpu: 100m
             memory: 100Mi

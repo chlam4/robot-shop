@@ -7,7 +7,7 @@ image:
 # Alternative payment gateway URL
 # Default is https://www.paypal.com
 payment:
-  gateway: null
+  gateway: https://pay.google.com
   #gateway: https://www.worldpay.com
 
 # EUM configuration

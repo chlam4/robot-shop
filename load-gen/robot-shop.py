@@ -1,5 +1,5 @@
 import os
-from locust import HttpUser, TaskSet, task
+from locust import HttpUser, TaskSet, task, between
 from random import choice
 from random import randint
 
@@ -9,7 +9,6 @@ class UserBehavior(TaskSet):
         """ on_start is called when a Locust start before any task is scheduled """
         print('Starting')
 
-    @task
     def login(self):
         credentials = {
                 'name': 'user',
@@ -61,7 +60,6 @@ class UserBehavior(TaskSet):
         order = self.client.post('/api/payment/pay/{}'.format(uniqueid), json=cart).json()
         print('Order {}'.format(order))
 
-    @task
     def error(self):
         if os.environ.get('ERROR') == '1':
             print('Error request')
@@ -71,5 +69,4 @@ class UserBehavior(TaskSet):
 
 class WebsiteUser(HttpUser):
     tasks = [UserBehavior]
-    min_wait = 1000
-    max_wait = 5000
+    wait_time = between(1, 5)
