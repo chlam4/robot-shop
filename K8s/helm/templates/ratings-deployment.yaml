@@ -17,6 +17,10 @@ spec:
       {{ if .Values.psp.enabled }}
       serviceAccountName: robot-shop
       {{ end }}
+      {{ if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecrets }}
+      {{ end }}
       containers:
       - name: ratings
         image: {{ .Values.image.repo }}/rs-ratings:{{ .Values.image.version }}

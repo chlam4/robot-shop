@@ -17,6 +17,10 @@ spec:
       {{ if .Values.psp.enabled }}
       serviceAccountName: robot-shop
       {{ end }}
+      {{ if .Values.image.pullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecrets }}
+      {{ end }}
       containers:
       - name: mongodb
         image: {{ .Values.image.repo }}/rs-mongodb:{{ .Values.image.version }}
